@@ -1,28 +1,24 @@
 import React from 'react';
-import { SafeAreaView, StatusBar, useColorScheme } from 'react-native';
-import { Text } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { NavigationContainer } from '@react-navigation/native';
-import AppNavigator from './src/navigation/AppNavigator.tsx';
+import LoginScreen from './src/screens/LoginScreen.tsx';
+import HomeScreen from './src/screens/HomeScreen.tsx';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator<StackParamList>();
+
+type StackParamList = {
+  Login: undefined;
+  Home: undefined;
+};
 
 const App = (): React.JSX.Element => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <Text>asdsd</Text>
-      <NavigationContainer>
-        <AppNavigator />
-      </NavigationContainer>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName={'Home'}>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
