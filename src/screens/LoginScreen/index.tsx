@@ -14,26 +14,33 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Logo />
-      <Text style={styles.text}>
-        자취생만을 위한 커뮤니티 House Talk와 함께 다채로운 자취생활을
-        시작하세요!
-      </Text>
-      <View style={styles.kakaoLogin}>
-        <TouchableOpacity onPress={handleLogin}>
-          <Text style={styles.kakaoText}>kakaoLogin</Text>
-        </TouchableOpacity>
+      <View>
+        <Logo />
+        <Text style={styles.text}>
+          자취생만을 위한 커뮤니티 House Talk와 함께 다채로운 자취생활을
+          시작하세요!
+        </Text>
       </View>
-      <View style={styles.naverLogin}>
-        <TouchableOpacity onPress={handleLogin}>
-          <Text style={styles.naverText}>Naver Lo</Text>
-        </TouchableOpacity>
+      <View style={styles.buttonBox}>
+        <View style={styles.kakaoLogin}>
+          <TouchableOpacity onPress={handleLogin}>
+            <Text style={styles.kakaoText}>Kakao로 로그인</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.naverLogin}>
+          <TouchableOpacity onPress={handleLogin}>
+            <Text style={styles.naverText}>Naver로 로그인</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.appleLogin}>
+          <TouchableOpacity onPress={handleLogin}>
+            <Text style={styles.appleText}>Apple로 로그인</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.appleLogin}>
-        <TouchableOpacity onPress={handleLogin}>
-          <Text style={styles.appleText}>kakaoLogin</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity onPress={handleLogin}>
+        <Text style={styles.emailLoginText}>이메일로 로그인 하기</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -51,12 +58,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
   },
+  buttonBox: {
+    gap: 8,
+  },
   container: {
     alignItems: 'center',
     backgroundColor: '#fff',
     flex: 1,
-    gap: 20,
+    gap: 100,
     justifyContent: 'center',
+  },
+  emailLoginText: {
+    color: '#000',
+    fontSize: 14,
+    textAlign: 'center',
   },
   kakaoLogin: {
     backgroundColor: '#FEE500',
@@ -85,6 +100,7 @@ const styles = StyleSheet.create({
   text: {
     color: '#000',
     fontSize: 16,
+    marginTop: 8,
     textAlign: 'center',
     width: 300,
   },
