@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Logo from './Logo';
+import Logo from '../../components/Logo';
 
 type LoginScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'Home'>;
@@ -10,6 +10,10 @@ type LoginScreenProps = {
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const handleLogin = () => {
     navigation.navigate('Home');
+  };
+
+  const handleEmailLogin = () => {
+    navigation.navigate('EmailLogin');
   };
 
   return (
@@ -38,7 +42,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <TouchableOpacity onPress={handleLogin}>
+      <TouchableOpacity onPress={handleEmailLogin}>
         <Text style={styles.emailLoginText}>이메일로 로그인 하기</Text>
       </TouchableOpacity>
     </View>
