@@ -18,8 +18,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Implement your login logic here
-    navigation.navigate('Join');
+    navigation.navigate('SignUp');
   };
 
   return (
