@@ -19,7 +19,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   const handleLogin = () => {
     // Implement your login logic here
-    navigation.navigate('Home');
+    navigation.navigate('Join');
   };
 
   return (
