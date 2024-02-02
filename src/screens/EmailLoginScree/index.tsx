@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Logo from '../../components/Logo';
-
+import CustomTextInput from '../../components/Input/CustomTextInput';
 type LoginScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'Home'>;
 };
@@ -31,19 +31,18 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         </Text>
       </View>
       <View style={styles.inputBox}>
-        <TextInput
-          style={styles.input}
+        <CustomTextInput
           placeholder="이메일"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
         />
-        <TextInput
-          style={styles.input}
+        <CustomTextInput
           placeholder="비밀번호"
           value={password}
           onChangeText={setPassword}
-          secureTextEntry
+          secureTextEntry={true}
+          keyboardType="default"
         />
       </View>
       <TouchableOpacity onPress={handleLogin} style={styles.emailLogin}>
@@ -72,12 +71,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
     textAlign: 'center',
-  },
-  input: {
-    backgroundColor: '#F3F4F5',
-    borderRadius: 4,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
   },
   inputBox: {
     gap: 8,
