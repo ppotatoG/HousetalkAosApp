@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-  TextInput,
-} from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Logo from '../../components/Logo';
 import CustomTextInput from '../../components/Input/CustomTextInput';
