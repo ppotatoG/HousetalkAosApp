@@ -1,19 +1,11 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  Button,
-  ScrollView,
-} from 'react-native';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import { View, Text, StyleSheet, Button, ScrollView } from 'react-native';
 import BottomSheetModal, {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
 import { termsData } from '../../constants';
-
+import TermCheckbox from './TermCheckbox';
 const TermsAgreementForm = () => {
   const handleAllAgreePress = () => {
     const newCheckState = !checkboxStates.allAgree;
@@ -71,28 +63,15 @@ const TermsAgreementForm = () => {
 
   const renderTermsCheckboxes = () => {
     return termsData.map(term => (
-      <View key={term.key} style={styles.checkboxRow}>
-        <BouncyCheckbox
-          size={25}
-          isChecked={checkboxStates[term.key]}
-          iconStyle={{ borderRadius: 2 }}
-          fillColor={checkboxStates[term.key] ? '#204BFF' : '#ADB5BD'}
-          innerIconStyle={{ borderRadius: 2, borderWidth: 2 }}
-          onPress={() =>
-            setIndividualCheckboxState(term.key, !checkboxStates[term.key])
-          }
-        />
-        <Text style={styles.label}>
-          {term.required ? ' [필수] ' : ' [선택] '}
-          {term.title}
-        </Text>
-        <TouchableOpacity
-          style={styles.viewButton}
-          onPress={() => openBottomSheet(term.content)}
-        >
-          <Text>보기</Text>
-        </TouchableOpacity>
-      </View>
+      <TermCheckbox
+        key={term.key}
+        termKey={term.key}
+        label={`${term.required ? ' [필수] ' : ' [선택] '} ${term.title}`}
+        isChecked={checkboxStates[term.key]}
+        onChange={setIndividualCheckboxState}
+        onOpenBottomSheet={openBottomSheet}
+        content={term.content}
+      />
     ));
   };
 
@@ -140,11 +119,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
-  checkboxRow: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginBottom: 10,
-  },
   container: {
     alignItems: 'flex-start',
     flex: 1,
@@ -157,19 +131,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  label: {
-    color: '#000',
-    flex: 1,
-    fontSize: 14,
-  },
   title: {
     color: '#000',
     fontSize: 20,
     marginBottom: 20,
-  },
-  viewButton: {
-    backgroundColor: '#fff',
-    fontSize: 14,
   },
 });
 
