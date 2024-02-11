@@ -12,17 +12,20 @@ import BottomSheetModal, {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
-import { TermsOfService } from '../../constants';
-
-interface CheckboxStates {
-  termsOfService: boolean;
-  privacyPolicy: boolean;
-  locationData: boolean;
-  marketing: boolean;
-  allAgree: boolean;
-}
+import { termsData } from '../../constants';
 
 const TermsAgreementForm = () => {
+  const handleAllAgreePress = () => {
+    const newCheckState = !checkboxStates.allAgree;
+    setCheckboxStates({
+      termsOfService: newCheckState,
+      privacyPolicy: newCheckState,
+      locationData: newCheckState,
+      marketing: newCheckState,
+      allAgree: newCheckState,
+    });
+  };
+
   const [checkboxStates, setCheckboxStates] = useState<CheckboxStates>({
     termsOfService: false,
     privacyPolicy: false,
@@ -37,9 +40,9 @@ const TermsAgreementForm = () => {
   ) => {
     setCheckboxStates(prevStates => {
       const newStates = { ...prevStates, [key]: value };
-      const allChecked = Object.entries(newStates)
-        .filter(([k]) => k !== 'allAgree')
-        .every(([, v]) => v);
+      const allChecked = Object.keys(newStates)
+        .filter(k => k !== 'allAgree')
+        .every(k => newStates[k as keyof CheckboxStates]);
       return { ...newStates, allAgree: allChecked };
     });
   };
@@ -49,8 +52,8 @@ const TermsAgreementForm = () => {
 
   const snapPoints = useMemo(() => ['50%'], []);
 
-  const openBottomSheet = (item: string) => {
-    setSelectedItem(item);
+  const openBottomSheet = (content: string) => {
+    setSelectedItem(content);
     bottomSheetRef.current?.expand();
   };
 
@@ -66,38 +69,43 @@ const TermsAgreementForm = () => {
     []
   );
 
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>서비스 이용약관 동의 해주세요</Text>
-
-      <View style={styles.checkboxRow}>
+  const renderTermsCheckboxes = () => {
+    return termsData.map(term => (
+      <View key={term.key} style={styles.checkboxRow}>
         <BouncyCheckbox
           size={25}
-          isChecked={checkboxStates.termsOfService}
-          iconStyle={{
-            borderRadius: 2,
-          }}
-          fillColor={checkboxStates.termsOfService ? '#204BFF' : '#ADB5BD'}
-          innerIconStyle={{
-            borderRadius: 2,
-            borderWidth: 2,
-          }}
+          isChecked={checkboxStates[term.key]}
+          iconStyle={{ borderRadius: 2 }}
+          fillColor={checkboxStates[term.key] ? '#204BFF' : '#ADB5BD'}
+          innerIconStyle={{ borderRadius: 2, borderWidth: 2 }}
           onPress={() =>
-            setIndividualCheckboxState(
-              'termsOfService',
-              !checkboxStates.termsOfService
-            )
+            setIndividualCheckboxState(term.key, !checkboxStates[term.key])
           }
         />
-        <Text style={styles.label}>서비스 이용약관</Text>
+        <Text style={styles.label}>
+          {term.required ? ' [필수] ' : ' [선택] '}
+          {term.title}
+        </Text>
         <TouchableOpacity
           style={styles.viewButton}
-          onPress={() => openBottomSheet(TermsOfService)}
+          onPress={() => openBottomSheet(term.content)}
         >
           <Text>보기</Text>
         </TouchableOpacity>
       </View>
+    ));
+  };
 
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>서비스 이용약관 동의 해주세요</Text>
+      <View style={styles.allAgreeContainer}>
+        <Button
+          title={checkboxStates.allAgree ? '모두 동의 해제' : '모두 동의'}
+          onPress={handleAllAgreePress}
+        />
+      </View>
+      {renderTermsCheckboxes()}
       <BottomSheetModal
         ref={bottomSheetRef}
         snapPoints={snapPoints}
@@ -119,6 +127,10 @@ const TermsAgreementForm = () => {
 };
 
 const styles = StyleSheet.create({
+  allAgreeContainer: {
+    marginTop: 10,
+    width: '100%',
+  },
   bottomSheet: {
     backgroundColor: 'white',
     borderRadius: 20,
