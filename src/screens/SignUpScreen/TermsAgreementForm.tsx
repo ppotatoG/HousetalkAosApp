@@ -1,20 +1,31 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Button, ScrollView } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Button,
+  ScrollView,
+} from 'react-native';
 import BottomSheetModal, {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
 import { termsData } from '../../constants';
 import TermCheckbox from './TermCheckbox';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
+
 const TermsAgreementForm = () => {
   const handleAllAgreePress = () => {
-    const newCheckState = !checkboxStates.allAgree;
-    setCheckboxStates({
-      termsOfService: newCheckState,
-      privacyPolicy: newCheckState,
-      locationData: newCheckState,
-      marketing: newCheckState,
-      allAgree: newCheckState,
+    setCheckboxStates(prevStates => {
+      const newCheckState = !prevStates.allAgree;
+      return {
+        termsOfService: newCheckState,
+        privacyPolicy: newCheckState,
+        locationData: newCheckState,
+        marketing: newCheckState,
+        allAgree: newCheckState,
+      };
     });
   };
 
@@ -78,12 +89,30 @@ const TermsAgreementForm = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>서비스 이용약관 동의 해주세요</Text>
-      <View style={styles.allAgreeContainer}>
-        <Button
-          title={checkboxStates.allAgree ? '모두 동의 해제' : '모두 동의'}
-          onPress={handleAllAgreePress}
+      <TouchableOpacity
+        style={styles.allAgreeContainer}
+        onPress={handleAllAgreePress}
+      >
+        <BouncyCheckbox
+          size={25}
+          isChecked={checkboxStates.allAgree}
+          iconStyle={{ borderRadius: 2 }}
+          fillColor={checkboxStates.allAgree ? '#204BFF' : '#ADB5BD'}
+          innerIconStyle={{ borderRadius: 2, borderWidth: 2 }}
+          onPress={() =>
+            setCheckboxStates(prevStates => ({
+              ...prevStates,
+              allAgree: !prevStates.allAgree,
+              termsOfService: !prevStates.allAgree,
+              privacyPolicy: !prevStates.allAgree,
+              locationData: !prevStates.allAgree,
+              marketing: !prevStates.allAgree,
+            }))
+          }
         />
-      </View>
+        <Text style={styles.label}>약관 전체 동의</Text>
+      </TouchableOpacity>
+
       {renderTermsCheckboxes()}
       <BottomSheetModal
         ref={bottomSheetRef}
@@ -107,7 +136,13 @@ const TermsAgreementForm = () => {
 
 const styles = StyleSheet.create({
   allAgreeContainer: {
+    alignItems: 'center',
+    backgroundColor: '#F3F4F5',
+    borderRadius: 10,
+    flexDirection: 'row',
+    marginBottom: 20,
     marginTop: 10,
+    padding: 20,
     width: '100%',
   },
   bottomSheet: {
@@ -130,6 +165,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
+  },
+  label: {
+    color: '#000',
+    flex: 1,
+    fontSize: 14,
   },
   title: {
     color: '#000',

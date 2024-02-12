@@ -26,7 +26,9 @@ const TermCheckbox = ({
       innerIconStyle={{ borderRadius: 2, borderWidth: 2 }}
       onPress={() => onChange(termKey, !isChecked)}
     />
-    <Text style={styles.label}>{label}</Text>
+    <Text style={styles.label} onPress={() => onChange(termKey, !isChecked)}>
+      {label}
+    </Text>
     <TouchableOpacity
       style={styles.viewButton}
       onPress={() => onOpenBottomSheet(content)}
@@ -41,6 +43,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
   label: {
     color: '#000',
