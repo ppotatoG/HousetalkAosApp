@@ -39,6 +39,18 @@ const SignupScreen: React.FC<LoginScreenProps> = () => {
     }));
   };
 
+  const buttonStepDisabled = () => {
+    switch (currentStep) {
+      case SignupSteps.TERMS_AGREEMENT:
+        return !signupData.termsOfService.allAgree;
+      case SignupSteps.NAME:
+        return !signupData.name;
+      case SignupSteps.PROFILE_IMAGE:
+        return !signupData.profileImage;
+      default:
+    }
+  };
+
   const handleNextStep = () => {
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
@@ -74,30 +86,70 @@ const SignupScreen: React.FC<LoginScreenProps> = () => {
       <Stepper currentStep={currentStep} steps={SignupSteps} />
 
       {renderStepContent()}
-      <View style={styles.buttonContainer}>
-        {currentStep > SignupSteps.TERMS_AGREEMENT && (
-          <Button title="이전" onPress={handlePrevStep} />
-        )}
-        {currentStep < totalSteps && (
-          <Button title="다음" onPress={handleNextStep} />
-        )}
-      </View>
+
+      {currentStep > SignupSteps.TERMS_AGREEMENT && (
+        <TouchableOpacity
+          onPress={handlePrevStep}
+          style={styles.buttonContainer}
+        >
+          <Text style={styles.buttonText}>이전</Text>
+        </TouchableOpacity>
+      )}
+      {currentStep < totalSteps && (
+        <TouchableOpacity
+          onPress={handleNextStep}
+          style={
+            buttonStepDisabled()
+              ? styles.buttonDisabledContainer
+              : styles.buttonContainer
+          }
+          disabled={buttonStepDisabled()}
+        >
+          <Text style={styles.buttonDisabledText}>
+            {currentStep === 1 ? '동의하고 가입하기' : '다음'}
+          </Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    backgroundColor: '#000',
+    borderRadius: 10,
+    height: 44,
     marginTop: 20,
+    padding: 10,
+    textAlign: 'center',
+    width: '100%',
+  },
+  buttonDisabledContainer: {
+    backgroundColor: '#DEE2E6',
+    borderRadius: 10,
+    color: '#ADB5BD',
+    height: 44,
+    marginTop: 20,
+    padding: 10,
+    textAlign: 'center',
+    width: '100%',
+  },
+  buttonDisabledText: {
+    color: '#ADB5BD',
+    textAlign: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
   },
   container: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     backgroundColor: '#fff',
     flex: 1,
     gap: 100,
-    justifyContent: 'center',
+    height: '100%',
+    justifyContent: 'flex-start',
+    padding: 20,
   },
 });
 
