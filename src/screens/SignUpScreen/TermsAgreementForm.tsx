@@ -8,18 +8,25 @@ import { termsData } from '../../constants';
 import TermCheckbox from './TermCheckbox';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
-const TermsAgreementForm = () => {
+interface TermsAgreementFormProps {
+  data: CheckboxStates;
+  onDataChange: (
+    key: keyof CheckboxStates,
+    value: string | boolean | null
+  ) => void;
+}
+
+const TermsAgreementForm = ({
+  data,
+  onDataChange,
+}: TermsAgreementFormProps) => {
   const handleAllAgreePress = () => {
-    setCheckboxStates(prevStates => {
-      const newCheckState = !prevStates.allAgree;
-      return {
-        termsOfService: newCheckState,
-        privacyPolicy: newCheckState,
-        locationData: newCheckState,
-        marketing: newCheckState,
-        allAgree: newCheckState,
-      };
-    });
+    const newCheckState = !data.allAgree;
+    onDataChange('termsOfService', newCheckState);
+    onDataChange('privacyPolicy', newCheckState);
+    onDataChange('locationData', newCheckState);
+    onDataChange('marketing', newCheckState);
+    onDataChange('allAgree', newCheckState);
   };
 
   const [checkboxStates, setCheckboxStates] = useState<CheckboxStates>({
@@ -140,7 +147,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     minWidth: '100%',
-    padding: 20,
   },
   contentContainer: {
     alignItems: 'center',

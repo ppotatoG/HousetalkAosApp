@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Button, StyleSheet, Text } from 'react-native';
+import { View, Button, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Stepper from '../../components/Stepper';
 import { SignupSteps, StepLabels } from '../../constants';
@@ -12,6 +12,32 @@ type LoginScreenProps = {
 const SignupScreen: React.FC<LoginScreenProps> = () => {
   const [currentStep, setCurrentStep] = useState(SignupSteps.TERMS_AGREEMENT);
   const totalSteps = Object.keys(SignupSteps).length;
+
+  const [signupData, setSignupData] = useState<SignupData>({
+    termsOfService: {
+      termsOfService: false,
+      privacyPolicy: false,
+      locationData: false,
+      marketing: false,
+      allAgree: false,
+    },
+    name: '',
+    profileImage: null,
+  });
+
+  const handleDataChange = (
+    key: keyof CheckboxStates,
+    value: boolean | string | null
+  ) => {
+    console.log(key, value);
+    setSignupData(prevData => ({
+      ...prevData,
+      termsOfService: {
+        ...prevData.termsOfService,
+        [key]: value,
+      },
+    }));
+  };
 
   const handleNextStep = () => {
     if (currentStep < totalSteps) {
@@ -28,7 +54,12 @@ const SignupScreen: React.FC<LoginScreenProps> = () => {
   const renderStepContent = () => {
     switch (currentStep) {
       case SignupSteps.TERMS_AGREEMENT:
-        return <TermsAgreementForm />;
+        return (
+          <TermsAgreementForm
+            data={signupData.termsOfService}
+            onDataChange={handleDataChange}
+          />
+        );
       case SignupSteps.NAME:
         return <Text>{StepLabels[SignupSteps.NAME]}</Text>;
       case SignupSteps.PROFILE_IMAGE:

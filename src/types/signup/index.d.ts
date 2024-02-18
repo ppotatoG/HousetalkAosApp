@@ -12,3 +12,9 @@ interface CheckboxStates {
   marketing: boolean;
   allAgree: boolean;
 }
+
+interface SignupData {
+  termsOfService: CheckboxStates;
+  name: string;
+  profileImage: string | null;
+}
