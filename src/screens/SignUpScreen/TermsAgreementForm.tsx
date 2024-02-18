@@ -1,12 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  Button,
-  ScrollView,
-} from 'react-native';
+import { View, Text, StyleSheet, Button, ScrollView } from 'react-native';
 import BottomSheetModal, {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
@@ -37,18 +30,18 @@ const TermsAgreementForm = () => {
     allAgree: false,
   });
 
-  const setIndividualCheckboxState = (
-    key: keyof CheckboxStates,
-    value: boolean
-  ) => {
-    setCheckboxStates(prevStates => {
-      const newStates = { ...prevStates, [key]: value };
-      const allChecked = Object.keys(newStates)
-        .filter(k => k !== 'allAgree')
-        .every(k => newStates[k as keyof CheckboxStates]);
-      return { ...newStates, allAgree: allChecked };
-    });
-  };
+  const setIndividualCheckboxState = useCallback(
+    (key: keyof CheckboxStates, value: boolean) => {
+      setCheckboxStates(prevStates => {
+        const newStates = { ...prevStates, [key]: value };
+        const allChecked = Object.keys(newStates)
+          .filter(k => k !== 'allAgree')
+          .every(k => newStates[k as keyof CheckboxStates]);
+        return { ...newStates, allAgree: allChecked };
+      });
+    },
+    []
+  );
 
   const [selectedItem, setSelectedItem] = useState('');
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -89,29 +82,17 @@ const TermsAgreementForm = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>서비스 이용약관 동의 해주세요</Text>
-      <TouchableOpacity
-        style={styles.allAgreeContainer}
-        onPress={handleAllAgreePress}
-      >
+      <View style={styles.allAgreeContainer}>
         <BouncyCheckbox
           size={25}
           isChecked={checkboxStates.allAgree}
           iconStyle={{ borderRadius: 2 }}
           fillColor={checkboxStates.allAgree ? '#204BFF' : '#ADB5BD'}
           innerIconStyle={{ borderRadius: 2, borderWidth: 2 }}
-          onPress={() =>
-            setCheckboxStates(prevStates => ({
-              ...prevStates,
-              allAgree: !prevStates.allAgree,
-              termsOfService: !prevStates.allAgree,
-              privacyPolicy: !prevStates.allAgree,
-              locationData: !prevStates.allAgree,
-              marketing: !prevStates.allAgree,
-            }))
-          }
+          onPress={handleAllAgreePress}
         />
         <Text style={styles.label}>약관 전체 동의</Text>
-      </TouchableOpacity>
+      </View>
 
       {renderTermsCheckboxes()}
       <BottomSheetModal
