@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Stepper from '../../components/Stepper';
 import { SignupSteps, StepLabels } from '../../constants';
 import TermsAgreementForm from './TermsAgreementForm.tsx';
+import UserNameForm from './UserNameForm.tsx';
 
 type LoginScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'Home'>;
@@ -22,14 +23,21 @@ const SignupScreen: React.FC<LoginScreenProps> = () => {
       allAgree: false,
     },
     name: '',
-    profileImage: null,
+    birthDate: '',
+    gender: null,
+    phone: '',
+    address: '',
+    livingInfo: {
+      duration: null,
+      type: null,
+      people: null,
+    },
+    id: '',
+    nickname: '',
+    profileImage: '',
   });
 
-  const handleDataChange = (
-    key: keyof CheckboxStates,
-    value: boolean | string | null
-  ) => {
-    console.log(key, value);
+  const handleAgreeChange: AgreementChange = (key, value) => {
     setSignupData(prevData => ({
       ...prevData,
       termsOfService: {
@@ -37,6 +45,15 @@ const SignupScreen: React.FC<LoginScreenProps> = () => {
         [key]: value,
       },
     }));
+  };
+
+  const handleDataChange: JoinFormChange = (key, value) => {
+    setSignupData(prevData => {
+      return {
+        ...prevData,
+        [key]: value,
+      };
+    });
   };
 
   const buttonStepDisabled = () => {
@@ -69,11 +86,16 @@ const SignupScreen: React.FC<LoginScreenProps> = () => {
         return (
           <TermsAgreementForm
             data={signupData.termsOfService}
-            onDataChange={handleDataChange}
+            onDataChange={handleAgreeChange}
           />
         );
       case SignupSteps.NAME:
-        return <Text>{StepLabels[SignupSteps.NAME]}</Text>;
+        return (
+          <UserNameForm
+            data={signupData.name}
+            onDataChange={handleDataChange}
+          />
+        );
       case SignupSteps.PROFILE_IMAGE:
         return <Text>{StepLabels[SignupSteps.PROFILE_IMAGE]}</Text>;
       default:

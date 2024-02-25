@@ -8,18 +8,7 @@ import { termsData } from '../../constants';
 import TermCheckbox from './TermCheckbox';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
-interface TermsAgreementFormProps {
-  data: CheckboxStates;
-  onDataChange: (
-    key: keyof CheckboxStates,
-    value: string | boolean | null
-  ) => void;
-}
-
-const TermsAgreementForm = ({
-  data,
-  onDataChange,
-}: TermsAgreementFormProps) => {
+const TermsAgreementForm = ({ data, onDataChange }: AgreementProps) => {
   const handleAllAgreePress = () => {
     const newCheckState = !data.allAgree;
     onDataChange('termsOfService', newCheckState);
