@@ -81,57 +81,72 @@ const SignupScreen: React.FC<LoginScreenProps> = () => {
     }
   };
 
+  const isPrevButtonVisible = currentStep > SignupSteps.TERMS_AGREEMENT;
+  const isNextButtonVisible = currentStep < totalSteps;
+  const isNextButtonDisabled = buttonStepDisabled();
+
+  const renderPrevButton = () => (
+    <View style={styles.buttonContainer}>
+      <TouchableOpacity onPress={handlePrevStep} style={styles.button}>
+        <Text style={styles.buttonText}>이전</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const renderNextButton = () => (
+    <View
+      style={
+        currentStep === SignupSteps.TERMS_AGREEMENT
+          ? styles.fullWidthContainer
+          : styles.halfWidthContainer
+      }
+    >
+      <TouchableOpacity
+        onPress={handleNextStep}
+        style={isNextButtonDisabled ? styles.buttonDisabled : styles.button}
+        disabled={isNextButtonDisabled}
+      >
+        <Text
+          style={
+            isNextButtonDisabled ? styles.buttonDisabledText : styles.buttonText
+          }
+        >
+          {currentStep === SignupSteps.TERMS_AGREEMENT
+            ? '동의하고 가입하기'
+            : '다음'}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <Stepper currentStep={currentStep} steps={SignupSteps} />
-
       {renderStepContent()}
-
-      {currentStep > SignupSteps.TERMS_AGREEMENT && (
-        <TouchableOpacity
-          onPress={handlePrevStep}
-          style={styles.buttonContainer}
-        >
-          <Text style={styles.buttonText}>이전</Text>
-        </TouchableOpacity>
-      )}
-      {currentStep < totalSteps && (
-        <TouchableOpacity
-          onPress={handleNextStep}
-          style={
-            buttonStepDisabled()
-              ? styles.buttonDisabledContainer
-              : styles.buttonContainer
-          }
-          disabled={buttonStepDisabled()}
-        >
-          <Text style={styles.buttonDisabledText}>
-            {currentStep === 1 ? '동의하고 가입하기' : '다음'}
-          </Text>
-        </TouchableOpacity>
-      )}
+      <View style={styles.buttonWrap}>
+        {isPrevButtonVisible && renderPrevButton()}
+        {isNextButtonVisible && renderNextButton()}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  buttonContainer: {
+  button: {
     backgroundColor: '#000',
     borderRadius: 10,
     height: 44,
-    marginTop: 20,
     padding: 10,
-    textAlign: 'center',
     width: '100%',
   },
-  buttonDisabledContainer: {
+  buttonContainer: {
+    width: '48%',
+  },
+  buttonDisabled: {
     backgroundColor: '#DEE2E6',
     borderRadius: 10,
-    color: '#ADB5BD',
     height: 44,
-    marginTop: 20,
     padding: 10,
-    textAlign: 'center',
     width: '100%',
   },
   buttonDisabledText: {
@@ -142,6 +157,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
   },
+  buttonWrap: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    width: '100%',
+  },
   container: {
     alignItems: 'flex-start',
     backgroundColor: '#fff',
@@ -150,6 +172,12 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'flex-start',
     padding: 20,
+  },
+  fullWidthContainer: {
+    width: '100%',
+  },
+  halfWidthContainer: {
+    width: '48%',
   },
 });
 
