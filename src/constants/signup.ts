@@ -1,15 +1,15 @@
-export const SignupSteps = {
-  TERMS_AGREEMENT: 1,
-  NAME: 2,
-  BIRTHDATE: 3,
-  CONTACT: 4,
-  ADDRESS: 5,
-  RESIDENCE: 6,
-  USERNAME: 7,
-  PASSWORD: 8,
-  NICKNAME: 9,
-  PROFILE_IMAGE: 10,
-};
+export enum SignupSteps {
+  TERMS_AGREEMENT = 1,
+  NAME = 2,
+  BIRTHDATE = 3,
+  CONTACT = 4,
+  ADDRESS = 5,
+  RESIDENCE = 6,
+  USERNAME = 7,
+  PASSWORD = 8,
+  NICKNAME = 9,
+  PROFILE_IMAGE = 10,
+}
 
 export const StepLabels = {
   [SignupSteps.TERMS_AGREEMENT]: '이용약관 동의',

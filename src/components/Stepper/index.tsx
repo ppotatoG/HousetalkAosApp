@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Animated, StyleSheet, ViewStyle } from 'react-native';
+import { SignupSteps } from '../../constants';
 
 interface StepperProps {
   currentStep: number;
-  steps: { [key: string]: number };
+  steps: typeof SignupSteps | { [key: string]: number };
 }
 
 const Stepper = ({ currentStep, steps }: StepperProps) => {
