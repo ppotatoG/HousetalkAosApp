@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Button, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Stepper from '../../components/Stepper';
 import { SignupSteps, StepLabels } from '../../constants';
@@ -165,12 +165,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   container: {
-    alignItems: 'flex-start',
+    alignItems: 'stretch',
     backgroundColor: '#fff',
     flex: 1,
-    gap: 100,
+    flexDirection: 'column',
     height: '100%',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     padding: 20,
   },
   fullWidthContainer: {
