@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Stepper from '../../components/Stepper';
-import { SignupSteps, StepLabels } from '../../constants';
-import TermsAgreementForm from './TermsAgreementForm.tsx';
-import UserNameForm from './UserNameForm.tsx';
+import { SignupSteps } from '../../constants';
+import NavigationButton from './NavigationButton.tsx';
+import StepContent from './StepContent.tsx';
 
 type LoginScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'Home'>;
@@ -80,104 +80,51 @@ const SignupScreen: React.FC<LoginScreenProps> = () => {
     }
   };
 
-  const renderStepContent = () => {
-    switch (currentStep) {
-      case SignupSteps.TERMS_AGREEMENT:
-        return (
-          <TermsAgreementForm
-            data={signupData.termsOfService}
-            onDataChange={handleAgreeChange}
-          />
-        );
-      case SignupSteps.NAME:
-        return (
-          <UserNameForm
-            data={signupData.name}
-            onDataChange={handleDataChange}
-          />
-        );
-      case SignupSteps.PROFILE_IMAGE:
-        return <Text>{StepLabels[SignupSteps.PROFILE_IMAGE]}</Text>;
-      default:
-        return null;
-    }
-  };
-
   const isPrevButtonVisible = currentStep > SignupSteps.TERMS_AGREEMENT;
   const isNextButtonVisible = currentStep < totalSteps;
   const isNextButtonDisabled = buttonStepDisabled();
 
-  const renderPrevButton = () => (
-    <View style={styles.buttonContainer}>
-      <TouchableOpacity onPress={handlePrevStep} style={styles.button}>
-        <Text style={styles.buttonText}>이전</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
-  const renderNextButton = () => (
-    <View
-      style={
-        currentStep === SignupSteps.TERMS_AGREEMENT
-          ? styles.fullWidthContainer
-          : styles.halfWidthContainer
-      }
-    >
-      <TouchableOpacity
-        onPress={handleNextStep}
-        style={isNextButtonDisabled ? styles.buttonDisabled : styles.button}
-        disabled={isNextButtonDisabled}
-      >
-        <Text
-          style={
-            isNextButtonDisabled ? styles.buttonDisabledText : styles.buttonText
-          }
-        >
-          {currentStep === SignupSteps.TERMS_AGREEMENT
-            ? '동의하고 가입하기'
-            : '다음'}
-        </Text>
-      </TouchableOpacity>
-    </View>
-  );
-
   return (
     <View style={styles.container}>
       <Stepper currentStep={currentStep} steps={SignupSteps} />
-      {renderStepContent()}
+      <StepContent
+        currentStep={currentStep}
+        signupData={signupData}
+        handleAgreeChange={handleAgreeChange}
+        handleDataChange={handleDataChange}
+      />
       <View style={styles.buttonWrap}>
-        {isPrevButtonVisible && renderPrevButton()}
-        {isNextButtonVisible && renderNextButton()}
+        {isPrevButtonVisible && (
+          <NavigationButton
+            onPress={handlePrevStep}
+            title="이전"
+            style={styles.buttonContainer}
+          />
+        )}
+        {isNextButtonVisible && (
+          <NavigationButton
+            onPress={handleNextStep}
+            title={
+              currentStep === SignupSteps.TERMS_AGREEMENT
+                ? '동의하고 가입하기'
+                : '다음'
+            }
+            disabled={isNextButtonDisabled}
+            style={
+              currentStep === SignupSteps.TERMS_AGREEMENT
+                ? styles.fullWidthContainer
+                : styles.halfWidthContainer
+            }
+          />
+        )}
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: '#000',
-    borderRadius: 10,
-    height: 44,
-    padding: 10,
-    width: '100%',
-  },
   buttonContainer: {
     width: '48%',
-  },
-  buttonDisabled: {
-    backgroundColor: '#DEE2E6',
-    borderRadius: 10,
-    height: 44,
-    padding: 10,
-    width: '100%',
-  },
-  buttonDisabledText: {
-    color: '#ADB5BD',
-    textAlign: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    textAlign: 'center',
   },
   buttonWrap: {
     alignItems: 'center',
