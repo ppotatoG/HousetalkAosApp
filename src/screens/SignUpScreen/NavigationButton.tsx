@@ -23,7 +23,7 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({
   <View style={style}>
     <TouchableOpacity
       onPress={onPress}
-      style={styles.button}
+      style={disabled ? styles.buttonDisabled : styles.button}
       disabled={disabled}
     >
       <Text style={disabled ? styles.buttonDisabledText : styles.buttonText}>
@@ -38,6 +38,13 @@ export default NavigationButton;
 const styles = StyleSheet.create({
   button: {
     backgroundColor: '#000',
+    borderRadius: 10,
+    height: 44,
+    padding: 10,
+    width: '100%',
+  },
+  buttonDisabled: {
+    backgroundColor: '#DEE2E6',
     borderRadius: 10,
     height: 44,
     padding: 10,
