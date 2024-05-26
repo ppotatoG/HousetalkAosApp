@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput, View, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface TextInputProps {
   placeholder: string;
@@ -7,6 +8,7 @@ interface TextInputProps {
   onChangeText: (text: string) => void;
   keyboardType: 'default' | 'email-address' | 'numeric' | 'phone-pad';
   secureTextEntry?: boolean;
+  useClear?: boolean;
 }
 
 const CustomTextInput = ({
@@ -15,27 +17,50 @@ const CustomTextInput = ({
   onChangeText,
   keyboardType,
   secureTextEntry,
+  useClear,
 }: TextInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
 
+  const clearInput = () => {
+    onChangeText('');
+  };
+
   return (
-    <TextInput
-      style={isFocused ? styles.inputFocused : styles.input}
-      placeholder={placeholder}
-      value={value}
-      onChangeText={onChangeText}
-      keyboardType={keyboardType}
-      secureTextEntry={secureTextEntry}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
-    />
+    <View style={styles.container}>
+      <TextInput
+        style={isFocused ? styles.inputFocused : styles.input}
+        placeholder={placeholder}
+        value={value}
+        onChangeText={onChangeText}
+        keyboardType={keyboardType}
+        secureTextEntry={secureTextEntry}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+      />
+      {useClear ? (
+        <TouchableOpacity onPress={clearInput} style={styles.clearButton}>
+          <Icon name="rocket" size={30} color="#900" />
+        </TouchableOpacity>
+      ) : null}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  clearButton: {
+    marginRight: 10,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+  container: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
   input: {
     backgroundColor: '#F3F4F5',
     borderRadius: 4,
+    flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
@@ -45,6 +70,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderStyle: 'solid',
     borderWidth: 2,
+    flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
