@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import CustomTextInput from '../../components/Input/CustomTextInput.tsx';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 const UserNameForm = ({ data, onDataChange }: JoinFormProps) => {
   const handleNameChange = (name: string) => {
@@ -10,15 +9,11 @@ const UserNameForm = ({ data, onDataChange }: JoinFormProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>이름을 입력해주세요</Text>
-      <View style={styles.inputBox}>
-        <CustomTextInput
-          placeholder="홍길동"
-          value={data}
-          onChangeText={handleNameChange}
-          keyboardType="default"
-          useClear={true}
-        />
-      </View>
+      <TextInput
+        style={styles.input}
+        value={data}
+        onChangeText={handleNameChange}
+      />
     </View>
   );
 };
@@ -27,18 +22,13 @@ export default UserNameForm;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'flex-start',
+    alignItems: 'center',
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
-  inputBox: {
-    gap: 8,
-    width: 343,
+  input: {
+    borderColor: '#000',
+    borderRadius: 10,
   },
-  title: {
-    color: '#000',
-    fontSize: 20,
-    fontWeight: '400',
-    marginBottom: 20,
-  },
+  title: {},
 });
