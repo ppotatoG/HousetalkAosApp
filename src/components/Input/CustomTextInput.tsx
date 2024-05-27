@@ -5,7 +5,7 @@ interface TextInputProps {
   placeholder: string;
   value: string;
   onChangeText: (text: string) => void;
-  keyboardType: 'default' | 'email-address' | 'numeric' | 'phone-pad';
+  keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
   secureTextEntry?: boolean;
 }
 
@@ -13,7 +13,7 @@ const CustomTextInput = ({
   placeholder,
   value,
   onChangeText,
-  keyboardType,
+  keyboardType = 'default',
   secureTextEntry,
 }: TextInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
